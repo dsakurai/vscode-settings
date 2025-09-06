@@ -48,5 +48,11 @@
           # Open the current directory when splitting a window
           bind '"' split-window -v -c "#{pane_current_path}"
           bind % split-window -h -c "#{pane_current_path}"
+
+          # Use vim bindings to navigate in windows
+          bind h select-pane -L
+          bind j select-pane -D
+          bind k select-pane -U
+          bind l select-pane -R
         dest: ~/.tmux.conf
         create: true
