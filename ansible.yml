@@ -45,5 +45,8 @@
       blockinfile:
         block: |
           set -g mouse on
+          # Open the current directory when splitting a window
+          bind '"' split-window -v -c "#{pane_current_path}"
+          bind % split-window -h -c "#{pane_current_path}"
         dest: ~/.tmux.conf
         create: true
