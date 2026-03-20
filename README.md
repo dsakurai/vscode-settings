@@ -9,6 +9,7 @@ It keeps a back up of the old version.
 Go to [`demo`](demo) for example settings files generated.
 
 ## How to Use This Project
+The script will ask you where the VS Code settings directory lies.
 
 Optionally, if you have existing settings directory that is inaccessible from this script, you can copy them in any accesible directory and run this script.
 
