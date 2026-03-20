@@ -1,4 +1,4 @@
-# Ansible VSCode
+# My VSCode Settings
 
 This project generates my personal VSCode settings.
 It can update existing settings or create a new one.
