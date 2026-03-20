@@ -18,7 +18,7 @@ echo "This program can accept existing VSCode settings directory, in which case 
 if [ ! -v OUTPUT_DIR ]; then
   echo "Choose VSCode settings directory (default: 1): "
   echo "1) Temporary directory"
-  echo "2) ./out"
+  echo "2) ./"
   echo "3) Custom directory"
   read choice
   case "${choice}" in
@@ -26,7 +26,7 @@ if [ ! -v OUTPUT_DIR ]; then
       OUTPUT_DIR="$(mktemp -d "${TMPDIR:-/tmp}/ansible-vscode-out.XXXXXX")"
       ;;
     2)
-      OUTPUT_DIR="./out"
+      OUTPUT_DIR="./"
       ;;
     3)
       read -rp "Enter path: " OUTPUT_DIR
