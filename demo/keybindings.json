@@ -1,0 +1,33 @@
+[
+    {
+        "command": "-workbench.action.terminal.openNativeConsole",
+        "key": "ctrl+shift+c",
+        "when": "!terminalFocus"
+    },
+    {
+        "command": "editor.action.clipboardCopyAction",
+        "key": "ctrl+shift+c"
+    },
+    {
+        "command": "-editor.action.clipboardCopyAction",
+        "key": "ctrl+c"
+    },
+    {
+        "command": "editor.action.clipboardPasteAction",
+        "key": "ctrl+shift+v"
+    },
+    {
+        "command": "-editor.action.clipboardPasteAction",
+        "key": "ctrl+v"
+    },
+    {
+        "command": "inlineChat.start",
+        "key": "ctrl+shift+i",
+        "when": "editorFocus && inlineChatHasEditsAgent && inlineChatPossible && !editorReadonly && !editorSimpleInput && activeEditor != 'workbench.editor.notebook' || editorFocus && inlineChatHasNotebookAgent && inlineChatPossible && !editorReadonly && !editorSimpleInput && activeEditor == 'workbench.editor.notebook' || editorFocus && inlineChatHasNotebookInline && inlineChatPossible && !editorReadonly && !editorSimpleInput && activeEditor == 'workbench.editor.notebook' || editorFocus && inlineChatHasProvider && inlineChatPossible && !editorReadonly && !editorSimpleInput && activeEditor != 'workbench.editor.notebook'"
+    },
+    {
+        "command": "-inlineChat.start",
+        "key": "ctrl+i",
+        "when": "editorFocus && inlineChatHasEditsAgent && inlineChatPossible && !editorReadonly && !editorSimpleInput && activeEditor != 'workbench.editor.notebook' || editorFocus && inlineChatHasNotebookAgent && inlineChatPossible && !editorReadonly && !editorSimpleInput && activeEditor == 'workbench.editor.notebook' || editorFocus && inlineChatHasNotebookInline && inlineChatPossible && !editorReadonly && !editorSimpleInput && activeEditor == 'workbench.editor.notebook' || editorFocus && inlineChatHasProvider && inlineChatPossible && !editorReadonly && !editorSimpleInput && activeEditor != 'workbench.editor.notebook'"
+    }
+]

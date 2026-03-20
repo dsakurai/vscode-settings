@@ -1,0 +1,123 @@
+{
+    "[latex]": {
+        "editor.foldingStrategy": "indentation",
+        "editor.snippetSuggestions": "none",
+        "editor.wordBasedSuggestions": "off"
+    },
+    "dev.containers.defaultFeatures": {
+        "ghcr.io/devcontainers/features/git:1": {
+            "// Only needed when the Devcontainer does not provide a decent git binary.": null
+        }
+    },
+    "dev.containers.executeInWSL": true,
+    "dotfiles.repository": "git@github.com:dsakurai/ansible-dotfiles.git",
+    "dotfiles.targetPath": "/tmp/dotfiles",
+    "editor.autoIndentOnPaste": true,
+    "editor.autoIndentOnPasteWithinString": false,
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.minimap.enabled": false,
+    "editor.wordWrap": "on",
+    "extensions.experimental.affinity": {
+        "asvetliakov.vscode-neovim": 1
+    },
+    "github.copilot.enable": {
+        "*": false,
+        "markdown": false,
+        "plaintext": false,
+        "scminput": false,
+        "yaml": false
+    },
+    "github.copilot.nextEditSuggestions.enabled": false,
+    "python.analysis.typeCheckingMode": "standard",
+    "redhat.telemetry.enabled": false,
+    "remote.autoForwardPortsSource": "hybrid",
+    "security.allowedUNCHosts": [
+        "wsl.localhost"
+    ],
+    "terminal.integrated.commandsToSkipShell": [
+        "-workbench.action.quickOpen"
+    ],
+    "terminal.integrated.defaultProfile.linux": "bash",
+    "terminal.integrated.enableMultiLinePasteWarning": "never",
+    "terminal.integrated.persistentSessionScrollback": 1000000,
+    "terminal.integrated.profiles.linux": {
+        "bash": {
+            "path": "/usr/bin/bash"
+        },
+        "fish": {
+            "path": "fish"
+        },
+        "pwsh": {
+            "icon": "terminal-powershell",
+            "path": "pwsh"
+        },
+        "tmux": {
+            "icon": "terminal-tmux",
+            "path": "tmux"
+        },
+        "zsh": {
+            "path": "zsh"
+        }
+    },
+    "terminal.integrated.rightClickBehavior": "default",
+    "terminal.integrated.scrollback": 1000000,
+    "terminal.integrated.sendKeybindingsToShell": true,
+    "terminal.integrated.stickyScroll.enabled": false,
+    "terminal.integrated.suggest.enabled": false,
+    "terminal.integrated.suggest.inlineSuggestion": "off",
+    "vscode-neovim.ctrlKeysForInsertMode": [
+        "a",
+        "d",
+        "j",
+        "m",
+        "o",
+        "r",
+        "t",
+        "u",
+        "w",
+        "h",
+        "x",
+        "f",
+        "n",
+        "p"
+    ],
+    "vscode-neovim.ctrlKeysForNormalMode": [
+        "a",
+        "b",
+        "d",
+        "e",
+        "f",
+        "h",
+        "i",
+        "j",
+        "k",
+        "l",
+        "m",
+        "o",
+        "r",
+        "t",
+        "u",
+        "w",
+        "x",
+        "y",
+        "z",
+        "/",
+        "]",
+        "right",
+        "left",
+        "up",
+        "down",
+        "backspace",
+        "delete",
+        "v"
+    ],
+    "vscode-neovim.neovimExecutablePaths.win32": "",
+    "workbench.colorCustomizations": {
+        "titleBar.activeBackground": "#8dc3ec77",
+        "titleBar.activeForeground": "#000000",
+        "titleBar.inactiveBackground": "#8dc3ec10",
+        "titleBar.inactiveForeground": "#00000020"
+    },
+    "workbench.colorTheme": "Default Light+",
+    "workbench.startupEditor": "none"
+}
