@@ -11,7 +11,7 @@ require "io/console"
 
 SCRIPT_DIR = File.dirname(File.expand_path(__FILE__))
 
-def select_from_menu(title, items, default: 0)
+def ask_user(title, items, default: 0)
   index = default
 
   loop do
@@ -32,14 +32,14 @@ def select_from_menu(title, items, default: 0)
         index = (index + 1) % items.length
       end
     elsif ["\r", "\n"].include?(key)
-      return index
+      return items[index]
     elsif key.downcase == "j"
       index = (index + 1) % items.length
     elsif key.downcase == "k"
       index = (index - 1) % items.length
     elsif key =~ /[1-9]/
       numeric = key.to_i - 1
-      return numeric if numeric.between?(0, items.length - 1)
+      return items[numeric]
     end
 
     puts
@@ -52,15 +52,15 @@ def prompt_output_dir
     "back up the current settings and generate a new one by merging in the settings " \
     "favored by this project."
   )
-  choice = select_from_menu(
+  choice = ask_user(
     "Choose VSCode settings directory:",
     ["Temporary directory", "./", "Custom directory"]
   )
 
   case choice
-  when 0
+  when "Temporary directory"
     Dir.mktmpdir("ansible-vscode-out.")
-  when 1
+  when "./"
     "./"
   else
     Readline.readline("Enter path: ", true)&.strip || ""
@@ -68,15 +68,15 @@ def prompt_output_dir
 end
 
 def prompt_nvim_exe
-  choice = select_from_menu(
+  choice = ask_user(
     "Choose path to nvim.exe:",
     ["None", "scoop default", "Custom path"]
   )
 
   case choice
-  when 0
+  when "None"
     ""
-  when 1
+  when "scoop default"
     user_name = Readline.readline('Enter your Windows home directory: C:\Users\ ', true)&.strip || ""
     "C:\\Users\\#{user_name}\\scoop\\shims\\nvim.exe"
   else
@@ -95,18 +95,27 @@ OptionParser.new do |opts|
   end
 end.parse!
 
-if output_dir.nil?
-  output_dir = prompt_output_dir
-  nvim_exe = prompt_nvim_exe
+extra_vars = {
+  "role" => ask_user(
+                "Choose role:",
+                ["vscode"]
+            )
+}
+
+if extra_vars["role"] == "vscode"
+
+    if output_dir.nil?
+      output_dir = prompt_output_dir
+      nvim_exe = prompt_nvim_exe
+    end
+
+    extra_vars = extra_vars.merge({
+      "vscode_settings_dir" => output_dir,
+      "nvim_exe"            => nvim_exe,
+    })
 end
 
-FileUtils.mkdir_p(output_dir)
-
-extra_vars = {
-  "role"                => "vscode",
-  "vscode_settings_dir" => output_dir,
-  "nvim_exe"            => nvim_exe,
-}
+puts "Extra vars: #{extra_vars.inspect}"
 
 system(
   "ansible-playbook",
