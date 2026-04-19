@@ -11,6 +11,13 @@ require "io/console"
 
 SCRIPT_DIR = File.dirname(File.expand_path(__FILE__))
 
+def value(if_demo = nil, &block)
+  proc do
+    return if_demo if demo_mode && !if_demo.nil?
+    block.call
+  end
+end
+
 def ask_user(title, items, default: 0)
   index = default
 
@@ -58,47 +65,41 @@ end.parse!
 
 roles = {
     "vscode" => {
-        "vscode_settings_dir" => -> do
-            return File.join(SCRIPT_DIR, "demo") if demo_mode
+        "vscode_settings_dir" =>
+        (demo_mode ? -> { File.join(SCRIPT_DIR, "demo") }
+                   : -> do
+                        puts "..."
+                        choice = ask_user("Choose VSCode settings directory:", ["Temporary directory", "./", "Custom directory"])
+                        case choice
+                        when "Temporary directory"
+                          Dir.mktmpdir("ansible-vscode-out.")
+                        when "./"
+                          "./"
+                        else
+                          Readline.readline("Enter path: ", true)&.strip || ""
+                        end
+                   end
+        ),
 
-            puts(
-              "This program can accept existing VSCode settings directory, in which case it will " \
-              "back up the current settings and generate a new one by merging in the settings " \
-              "favored by this project."
-            )
-            choice = ask_user(
-              "Choose VSCode settings directory:",
-              ["Temporary directory", "./", "Custom directory"]
-            )
+        "nvim_exe" =>
+        (demo_mode ? -> {""}
+                   : -> do
+                        choice = ask_user(
+                          "Choose path to nvim.exe:",
+                          ["None", "scoop default", "Custom path"]
+                        )
 
-            case choice
-            when "Temporary directory"
-              Dir.mktmpdir("ansible-vscode-out.")
-            when "./"
-              "./"
-            else
-              Readline.readline("Enter path: ", true)&.strip || ""
-            end
-        end,
-
-        "nvim_exe" => -> do
-            return "" if demo_mode
-
-            choice = ask_user(
-              "Choose path to nvim.exe:",
-              ["None", "scoop default", "Custom path"]
-            )
-
-            case choice
-            when "None"
-              ""
-            when "scoop default"
-              user_name = Readline.readline('Enter your Windows home directory: C:\Users\ ', true)&.strip || ""
-              "C:\\Users\\#{user_name}\\scoop\\shims\\nvim.exe"
-            else
-              Readline.readline("Enter path: ", true)&.strip || ""
-            end
-        end
+                        case choice
+                        when "None"
+                          ""
+                        when "scoop default"
+                          user_name = Readline.readline('Enter your Windows home directory: C:\Users\ ', true)&.strip || ""
+                          "C:\\Users\\#{user_name}\\scoop\\shims\\nvim.exe"
+                        else
+                          Readline.readline("Enter path: ", true)&.strip || ""
+                        end
+                end
+        ),
     }
 }
 
