@@ -1,7 +1,6 @@
-# My VSCode Settings
+# My Dotfiles Generator
 
-This project generates my personal VS Code settings.
-I made this project because the settings sync of VS Code was tricky to maintain across different machines for my use.
+This project generates my personal dotfiles.
 
 This project updates existing settings or generate a new settings files.
 It keeps a back up of the old version.
@@ -15,7 +14,7 @@ Optionally, if you have existing settings directory that is inaccessible from th
 
 Run the following:
 ```
-./generate-vscode-settings.sh
+./generate-vscode-settings.py
 ```
 
 This will ask a few questions on the output directory and setting values.
