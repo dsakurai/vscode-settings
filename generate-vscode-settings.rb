@@ -46,74 +46,67 @@ def ask_user(title, items, default: 0)
   end
 end
 
-def prompt_output_dir
-  puts(
-    "This program can accept existing VSCode settings directory, in which case it will " \
-    "back up the current settings and generate a new one by merging in the settings " \
-    "favored by this project."
-  )
-  choice = ask_user(
-    "Choose VSCode settings directory:",
-    ["Temporary directory", "./", "Custom directory"]
-  )
 
-  case choice
-  when "Temporary directory"
-    Dir.mktmpdir("ansible-vscode-out.")
-  when "./"
-    "./"
-  else
-    Readline.readline("Enter path: ", true)&.strip || ""
-  end
-end
-
-def prompt_nvim_exe
-  choice = ask_user(
-    "Choose path to nvim.exe:",
-    ["None", "scoop default", "Custom path"]
-  )
-
-  case choice
-  when "None"
-    ""
-  when "scoop default"
-    user_name = Readline.readline('Enter your Windows home directory: C:\Users\ ', true)&.strip || ""
-    "C:\\Users\\#{user_name}\\scoop\\shims\\nvim.exe"
-  else
-    Readline.readline("Enter path: ", true)&.strip || ""
-  end
-end
-
-output_dir = nil
-nvim_exe = nil
+demo_mode = false
 
 OptionParser.new do |opts|
   opts.banner = "Usage: #{$PROGRAM_NAME} [-d]"
   opts.on("-d", "Demo mode: output to ./demo with no nvim.exe") do
-    output_dir = File.join(SCRIPT_DIR, "demo")
-    nvim_exe = ""
+    demo_mode  = true
   end
 end.parse!
 
-extra_vars = {
-  "role" => ask_user(
-                "Choose role:",
-                ["vscode"]
+roles = {
+    "vscode" => {
+        "vscode_settings_dir" => -> do
+            return File.join(SCRIPT_DIR, "demo") if demo_mode
+
+            puts(
+              "This program can accept existing VSCode settings directory, in which case it will " \
+              "back up the current settings and generate a new one by merging in the settings " \
+              "favored by this project."
             )
+            choice = ask_user(
+              "Choose VSCode settings directory:",
+              ["Temporary directory", "./", "Custom directory"]
+            )
+
+            case choice
+            when "Temporary directory"
+              Dir.mktmpdir("ansible-vscode-out.")
+            when "./"
+              "./"
+            else
+              Readline.readline("Enter path: ", true)&.strip || ""
+            end
+        end,
+
+        "nvim_exe" => -> do
+            return "" if demo_mode
+
+            choice = ask_user(
+              "Choose path to nvim.exe:",
+              ["None", "scoop default", "Custom path"]
+            )
+
+            case choice
+            when "None"
+              ""
+            when "scoop default"
+              user_name = Readline.readline('Enter your Windows home directory: C:\Users\ ', true)&.strip || ""
+              "C:\\Users\\#{user_name}\\scoop\\shims\\nvim.exe"
+            else
+              Readline.readline("Enter path: ", true)&.strip || ""
+            end
+        end
+    }
 }
 
-if extra_vars["role"] == "vscode"
+role = ask_user("Choose role:", roles.keys)
 
-    if output_dir.nil?
-      output_dir = prompt_output_dir
-      nvim_exe = prompt_nvim_exe
-    end
-
-    extra_vars = extra_vars.merge({
-      "vscode_settings_dir" => output_dir,
-      "nvim_exe"            => nvim_exe,
-    })
-end
+extra_vars = { "role" => role }.merge(
+  roles[role].transform_values(&:call)
+)
 
 puts "Extra vars: #{extra_vars.inspect}"
 
